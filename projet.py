@@ -1,16 +1,20 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-# Read the csv file into a DataFrame
+# Load the dataset into a DataFrame
+df = pd.read_csv('dataset.txt', sep='\t')
 
-data = pd.read_csv('dataset.txt', names=['AT', 'V', 'AP', 'RH', 'EP'], sep='\t')
+# Determine the number of columns in the DataFrame
+num_columns = df.shape[1]
 
+# Create a figure with a subplot for each column
+fig, axes = plt.subplots(nrows=num_columns, ncols=1, figsize=(10, num_columns * 5))
 
-# Check for missing values
-missing_values = data.isnull().sum()
+# Create individual box plots for each column
+for i, column in enumerate(df.columns):
+    df.boxplot(column=column, ax=axes[i])
+    axes[i].set_title(f'Box Plot of {column}')
+    axes[i].set_ylabel('Values')
 
-print(missing_values)
-
-description_stats = data.describe()
-print(description_stats)
+plt.tight_layout()
+plt.show()
